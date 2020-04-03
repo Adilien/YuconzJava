@@ -22,15 +22,15 @@ public class MainDisplay {
 	/**
 	 * Create the Frame.
 	 */
-	public MainDisplay() {
-		initialize();
+	public MainDisplay(boolean isBeingReviewed) {
+		initialize(isBeingReviewed);
 
 	}
 
 	/**
 	 * Initialise the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize(boolean input) {
 		frame = new JFrame();
 		frame.setTitle("Yuconz System");
 		
@@ -108,6 +108,14 @@ public class MainDisplay {
 		
 		btnEmployees.setBounds(271, 235, 157, 23);
 		frame.getContentPane().add(btnEmployees);
+		
+		JButton btnReviewDoc = new JButton("Download Review Doc");
+		btnReviewDoc.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnReviewDoc.setBounds(271, 296, 157, 23);
+		frame.getContentPane().add(btnReviewDoc);
 		btnChangeAccess.setVisible(false);
 		
 		btnChangeAccess.addActionListener(new ActionListener() {
@@ -134,6 +142,12 @@ public class MainDisplay {
 		if(!accessLevel) {
 			btnEmployees.setVisible(false);
 			
+		}
+		
+		if(input) {
+			btnReviewDoc.setVisible(true);
+		}else {
+			btnReviewDoc.setVisible(false);
 		}
 
 	}

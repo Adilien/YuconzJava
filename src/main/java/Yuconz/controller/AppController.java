@@ -63,7 +63,9 @@ public class AppController {
     			auth.logAttempt(uName, pwd, true);
     			AppController.loginFrame.remove();
     			auth.logAuth();
-    			mainFrame = new MainDisplay();
+    			hrDb = new HRDatabase();
+    			boolean beingReviewed = hrDb.checkIfBeingReviewed();
+    			mainFrame = new MainDisplay(beingReviewed);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -93,6 +95,9 @@ public class AppController {
     			AppController.loginFrame.remove();
     			auth.logAuth();
     			mainReviewFrame = new ReviewFrame();
+    			
+    			
+    			
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -105,8 +110,6 @@ public class AppController {
     	}
     	
     }
-    
-    
     /**
      * Logs the new Authorisation via the Toggle into the Authorisation_Logs.txt file
      */
@@ -144,7 +147,8 @@ public class AppController {
     }
     
     /**
-     * Generates Personal Details Frame and Populates the details in it, from the database.
+     * Generates Personal Details Frame and Populates the details in it, from the Database.
+     * detailsLookUp is the class that connects to the PersonalDetails Table in the Database.
      * 
      */
     public static void generatePd() {
@@ -152,7 +156,6 @@ public class AppController {
     	mainFrame.hide();
     	detailsLookUp = new AllDetails();
     	if(detailsLookUp.checkDb()) {
-    		System.out.println("made it");
     		detailsLookUp.pullDetails();
     		myPdFrame = new MyPdFrame();
     	}else{
@@ -177,7 +180,6 @@ public class AppController {
      * 
      */
     public static void selectedDetails() {
-    	//int id = connection.getSelectedUser().getId();
     	connection.findUser();
     	
     	if(connection.matchPersonalDetails()) {
@@ -231,9 +233,12 @@ public class AppController {
     
     public static void createNewReview() {
     	hrDb = new HRDatabase();
+    	hrDb.getAllReviewers();
     	createReviewFrame = new CreateReview(hrDb.getReviewers());
     }
-    
+    public static void createReview() {
+    	hrDb.createReviewDoc();
+    }
     /**
      * Frame killings and creation takes place below
      */

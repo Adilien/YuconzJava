@@ -60,7 +60,6 @@ public class AllDetails {
 			Statement stmt = conn.createStatement();
 			ResultSet rs  = stmt.executeQuery(sql)){
 			gotId = rs.getInt("id");
-			System.out.println("Here"+ userId + rs.getInt("id"));
 		}catch(SQLException e){
 			
 			myDb = null;
@@ -69,7 +68,6 @@ public class AllDetails {
 		}
 		
 		if(gotId == userId) {
-			System.out.println("Hereee");
 			return true;
 		}else {
 			//return false;

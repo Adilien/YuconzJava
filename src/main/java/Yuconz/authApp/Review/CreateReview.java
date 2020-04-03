@@ -10,7 +10,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import Yuconz.authApp.Search.Db;
-
+import Yuconz.controller.AppController;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -137,14 +137,38 @@ public class CreateReview {
 		frame.getContentPane().add(btnSecondLock);
 		
 		JButton btnCreate = new JButton("Create");
+		
+		btnCreate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				String[] splitRev1 = txtRev1.getText().split("\\s+");
+				String[] splitRev2 = txtRev2.getText().split("\\s+");
+				
+				String Rev1FName = splitRev1[0];
+				String Rev1SName = splitRev1[1];
+				String Rev2FName = splitRev2[0];
+				String Rev2SName = splitRev2[1];
+				
+				HRDatabase.getRev1().setId(firstId);
+				HRDatabase.getRev1().setFirstName(Rev1FName);
+				HRDatabase.getRev1().setLastName(Rev1SName);
+				
+				HRDatabase.getRev2().setId(secondId);
+				HRDatabase.getRev2().setFirstName(Rev2FName);
+				HRDatabase.getRev2().setLastName(Rev2SName);
+				AppController.createReview();
+				
+			}	
+		});
 		btnCreate.setBounds(231, 291, 89, 23);
 		frame.getContentPane().add(btnCreate);
 		
 		JButton btnBack = new JButton("Back");
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				txtRev1.setText(null);
-				txtRev2.setText(null);
+				AppController.selectedDetails();
+				die();
 			}
 		});
 		btnBack.setBounds(132, 291, 89, 23);

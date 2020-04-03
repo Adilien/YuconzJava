@@ -6,9 +6,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import org.apache.commons.io.FileUtils;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 
 import javax.swing.JOptionPane;
 
+import Yuconz.authApp.Auth;
+import Yuconz.authApp.User;
 import Yuconz.authApp.Search.Db;
 
 /**
@@ -23,11 +33,12 @@ public class HRDatabase {
 	private ArrayList<ArrayList <String>> result = new ArrayList<ArrayList<String>>();
 	private String[][] data;
 	
+	private static User reviewer1 = new User(null, null, null, false, false, 0);
+	private static User reviewer2 = new User(null, null, null, false, false, 0);
+	
 	
 	public HRDatabase() {
 		connectToDb();
-		availableReviewers();
-		convertData();
 	}
 
 	public Connection connectToDb() {
@@ -48,6 +59,11 @@ public class HRDatabase {
 		}
 	}
 	
+	public void getAllReviewers() {
+		availableReviewers();
+		convertData();
+	}
+	
 	/**
 	 * Get all available reviewers from the database
 	 */
@@ -58,9 +74,6 @@ public class HRDatabase {
 		try(Connection conn = myDb;
 				Statement stmt = conn.createStatement();
 				ResultSet rs  = stmt.executeQuery(sql)){
-			
-			
-				
 			int columnCount = rs.getMetaData().getColumnCount();
 			while(rs.next())
 			{
@@ -87,8 +100,57 @@ public class HRDatabase {
 	}
 
 	public String[][] getReviewers() {
-
 		return data;
 	}
+	public boolean checkIfBeingReviewed() {
+		int userId = Auth.getCurrentUser().getId();
+		int foundId;
+		String sql = "select targetid from Reviews where targetid='"+userId+"'and Completed='0'";
+		connectToDb();
+		try(Connection conn = myDb;
+			Statement stmt = conn.createStatement();
+			ResultSet rs  = stmt.executeQuery(sql)){
+			foundId = rs.getInt("id");
+				
+		}catch(SQLException e){
+			
+			return false;
+		}
+		
+		if(foundId == userId) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	public void createReviewDoc() {
+		int targetId = Db.getSelectedUser().getId();
+
+		
+		DateTimeFormatter month = DateTimeFormatter.ofPattern("MM-yyyy");
+		DateTimeFormatter day = DateTimeFormatter.ofPattern("dd");
+		LocalDateTime currentTime = LocalDateTime.now();
+		String formattedMonth = currentTime.format(month);
+		String formattedDay = currentTime.format(day);
+		
+		File source = new File("rev/reviewDoc.pdf");
+		File destination = new File("rev/"+ targetId +"/"+formattedMonth+"/ProgressReview-"+formattedDay+".pdf");
+		
+		try {
+			FileUtils.copyFile(source, destination);
+		} catch (IOException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null,
+	    		    "Cannot Create Review Document",
+	    		    "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		
+	}
 	
+	public static User getRev1() {
+		return reviewer1;
+	}
+	public static User getRev2() {
+		return reviewer2;
+	}
 }
