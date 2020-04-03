@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><testrun name="authApp.Tests" project="Project" tests="3" started="3" failures="0" errors="0" ignored="0">
-  <testsuite name="authApp.Tests.AuthTest" time="0.026" displayname="AuthTest" uniqueid="[engine:junit-jupiter]/[class:authApp.Tests.AuthTest]">
-    <testcase name="checkValidUserTest1" classname="authApp.Tests.AuthTest" time="0.012" displayname="checkValidUserTest1()" uniqueid="[engine:junit-jupiter]/[class:authApp.Tests.AuthTest]/[method:checkValidUserTest1()]"/>
-    <testcase name="checkValidUserTest2" classname="authApp.Tests.AuthTest" time="0.003" displayname="checkValidUserTest2()" uniqueid="[engine:junit-jupiter]/[class:authApp.Tests.AuthTest]/[method:checkValidUserTest2()]"/>
-    <testcase name="connectToDbTest" classname="authApp.Tests.AuthTest" time="0.011" displayname="connectToDbTest()" uniqueid="[engine:junit-jupiter]/[class:authApp.Tests.AuthTest]/[method:connectToDbTest()]"/>
-  </testsuite>
-</testrun>
