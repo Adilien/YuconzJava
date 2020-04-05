@@ -62,10 +62,6 @@ public class UsersDisplay {
 		
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 	        public void valueChanged(ListSelectionEvent event) {
-	            //do some actions here, for example
-	            //print first column value from selected row
-	        	//We want to get their staff id
-	            //System.out.println(table.getValueAt(table.getSelectedRow(), 0).toString());
 	        	int column = 0;
 	        	int row = table.getSelectedRow();
 	        	String value = table.getModel().getValueAt(row, column).toString();

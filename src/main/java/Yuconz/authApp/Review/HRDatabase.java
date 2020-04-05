@@ -31,7 +31,8 @@ public class HRDatabase {
 	
 	
 	private Connection myDb = null;
-	private ArrayList<ArrayList <String>> result = new ArrayList<ArrayList<String>>();
+	private ArrayList<ArrayList <String>> resultRev = new ArrayList<ArrayList<String>>();
+	private ArrayList<ArrayList <String>> resultToDo = new ArrayList<ArrayList<String>>();
 	private String[][] availableRevs;
 	private String[][] toDoRevs;
 	
@@ -63,7 +64,7 @@ public class HRDatabase {
 	
 	public void getAllReviewers() {
 		availableReviewers();
-		convertData();
+		convertRevData();
 	}
 	
 	/**
@@ -84,7 +85,7 @@ public class HRDatabase {
 			    {
 			       row.add( rs.getString(i + 1));
 			    }
-			    result.add(row);
+			    resultRev.add(row);
 			}
 		}catch(SQLException e) {
 			JOptionPane.showMessageDialog(null,
@@ -290,17 +291,48 @@ public class HRDatabase {
 	 */
 	public void getAllRevTasks() {
 		
-		connectToDb();
+		availableTasks();
+		convertToDoData();
 		
+	}
+	public void availableTasks() {
+		
+		int userId = Auth.getCurrentUser().getId();
+		
+		String sql = "select targetid,targetFName,targetSName,r1id,r2id from Reviews where (r1id='"+userId+"' and Completed1 ='0') or (r2id='"+userId+"'and Completed2='0')";
+		
+		connectToDb();
+		try(Connection conn = myDb;
+				Statement stmt = conn.createStatement();
+				ResultSet rs  = stmt.executeQuery(sql)){
+			int columnCount = rs.getMetaData().getColumnCount();
+			while(rs.next())
+			{
+			    ArrayList<String> row = new  ArrayList<String>();
+			    for (int i=0; i <columnCount ; i++)
+			    {
+			       row.add( rs.getString(i + 1));
+			    }
+			    resultToDo.add(row);
+			}
+		}catch(SQLException e) {
+			JOptionPane.showMessageDialog(null,
+	    		    "Cannot connect to the Database",
+	    		    "Error",
+	    		    JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	
 	/**
 	 * Converts ArrayLists into a 2D Array, that can be used by the JTable.
 	 */
-	public void convertData(){
-		availableRevs = result.stream().map(u -> u.toArray(new String[0])).toArray(String[][]::new);
+	public void convertRevData(){
+		availableRevs = resultRev.stream().map(u -> u.toArray(new String[0])).toArray(String[][]::new);
 	}
-
+	
+	public void convertToDoData() {
+		toDoRevs = resultToDo.stream().map(u -> u.toArray(new String[0])).toArray(String[][]::new);
+	}
 	public String[][] getReviewers() {
 		return availableRevs;
 	}

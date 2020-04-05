@@ -99,7 +99,8 @@ public class AppController {
     public static void reviewMenu() {
     	
     	try {
-    		mainReviewFrame = new ReviewFrame();
+    		hrDb.getAllRevTasks();
+    		mainReviewFrame = new ReviewFrame(hrDb.getToDos());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
