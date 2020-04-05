@@ -32,7 +32,8 @@ public class HRDatabase {
 	
 	private Connection myDb = null;
 	private ArrayList<ArrayList <String>> result = new ArrayList<ArrayList<String>>();
-	private String[][] data;
+	private String[][] availableRevs;
+	private String[][] toDoRevs;
 	
 	private static User reviewer1 = new User(null, null, null, false, false, 0);
 	private static User reviewer2 = new User(null, null, null, false, false, 0);
@@ -93,16 +94,7 @@ public class HRDatabase {
 		}
 	}
 	
-	/**
-	 * Converts ArrayLists into a 2D Array, that can be used by the JTable.
-	 */
-	public void convertData(){
-		data = result.stream().map(u -> u.toArray(new String[0])).toArray(String[][]::new);
-	}
-
-	public String[][] getReviewers() {
-		return data;
-	}
+	
 	public boolean checkIfBeingReviewed() {
 		int userId = Auth.getCurrentUser().getId();
 		int foundId;
@@ -124,6 +116,10 @@ public class HRDatabase {
 			return false;
 		}
 	}
+	/**
+	 * Checks if the User is a Reviewer or not.
+	 * @return boolean
+	 */
 	public boolean checkIfReviewer() {
 		
 		int userId = Auth.getCurrentUser().getId();
@@ -141,13 +137,16 @@ public class HRDatabase {
 			return false;
 		}
 		
-		if(potentialId1 == userId ||potentialId2 == userId ) {
+		if(potentialId1 == userId || potentialId2 == userId ) {
 			return true;
 		}else {
 			return false;
 		}
 		
 	}
+	/**
+	 * Copies template review document in correct Directory for the User. Creates a Database Entry with all the corrosponding infromation.
+	 */
 	public void createReviewDoc() {
 		int targetId = Db.getSelectedUser().getId();
 
@@ -197,7 +196,9 @@ public class HRDatabase {
         }
 		
 	}
-	
+	/**
+	 * User downloads template review document to fill out.
+	 */
 	public void downloadMyRev() {
 		
 		int userId = Auth.getCurrentUser().getId();
@@ -232,7 +233,9 @@ public class HRDatabase {
 	    		    "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
-	
+	/**
+	 * Uploads Users Document so they can be reviewed.
+	 */
 	public void uploadMyRev() {
 		
 		JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
@@ -280,6 +283,30 @@ public class HRDatabase {
 		
 		
 		
+	}
+	
+	/** 
+	 * Get all the Users the User has to perform Reviews of
+	 */
+	public void getAllRevTasks() {
+		
+		connectToDb();
+		
+	}
+	
+	/**
+	 * Converts ArrayLists into a 2D Array, that can be used by the JTable.
+	 */
+	public void convertData(){
+		availableRevs = result.stream().map(u -> u.toArray(new String[0])).toArray(String[][]::new);
+	}
+
+	public String[][] getReviewers() {
+		return availableRevs;
+	}
+	
+	public String[][] getToDos(){
+		return toDoRevs;
 	}
 	
 	public static User getRev1() {
