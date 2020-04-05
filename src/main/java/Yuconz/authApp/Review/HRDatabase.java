@@ -153,6 +153,7 @@ public class HRDatabase {
 	 */
 	public void createReviewDoc() {
 		int targetId = Db.getSelectedUser().getId();
+		String lastName = Db.getSelectedUser().getLastName();
 
 		
 		DateTimeFormatter month = DateTimeFormatter.ofPattern("MM-yyyy");
@@ -163,7 +164,7 @@ public class HRDatabase {
 		
 		// Create File and Directory.
 		File source = new File("rev/reviewDoc.pdf");
-		String finalPath = "rev/"+ targetId +"/"+formattedMonth+"/ProgressReview-"+formattedDay+".pdf";
+		String finalPath = "rev/"+ targetId +"/"+formattedMonth+"/"+ lastName +"-ProgressReview-"+formattedDay+".pdf";
 		File destination = new File(finalPath);
 		
 		try {
@@ -229,7 +230,7 @@ public class HRDatabase {
 		
 		try {
 			FileUtils.copyFile(source, destination);
-			JOptionPane.showMessageDialog(null,"Successfully Downloaded To Your Downloads Folder.","Alert",JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null,"Successfully Downloaded To Your Devices Downloads Folder.","Alert",JOptionPane.WARNING_MESSAGE);
 		} catch (IOException e) {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(null,
@@ -246,7 +247,6 @@ public class HRDatabase {
 
 		int returnValue = jfc.showOpenDialog(null);
 		
-		// int returnValue = jfc.showSaveDialog(null);
 
 		if (returnValue == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = jfc.getSelectedFile();
@@ -345,19 +345,133 @@ public class HRDatabase {
 	}
 	public void downloadRev() {
 		
+		String sql = "select DocPath from Reviews where rid='"+rid+"'";
+		String path= "Tester.pdf";
 		connectToDb();
+		
+		try(Connection conn = myDb;
+				Statement stmt = conn.createStatement();
+				ResultSet rs  = stmt.executeQuery(sql)){
+			path = rs.getString("DocPath");
+			}catch(SQLException e){
+			
+			}
+		
+		String home = System.getProperty("user.home");
+		File source = new File(path);
+		String spl[]=path.split("/");
+		String name = spl[3];
+		
+		File destination = new File(home+"/Downloads/" + name +""); 
+		
+		try {
+			FileUtils.copyFile(source, destination);
+			JOptionPane.showMessageDialog(null,"Successfully Downloaded To Your Devices Downloads Folder.","Alert",JOptionPane.WARNING_MESSAGE);
+		} catch (IOException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null,
+	    		    "Could Not Download Review Document",
+	    		    "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		
+		
 		
 	}
 	public void uploadRev() {
 		
-		connectToDb();
+		JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+
+		int returnValue = jfc.showOpenDialog(null);
+		
+
+		if (returnValue == JFileChooser.APPROVE_OPTION) {
+			File selectedFile = jfc.getSelectedFile();
+			File source = new File(selectedFile.getAbsolutePath());
+			
+			String sql = "select DocPath from Reviews where rid='"+rid+"'";
+			
+			connectToDb();
+			
+			String path = null;
+			
+			try(Connection conn = myDb;
+					Statement stmt = conn.createStatement();
+					ResultSet rs  = stmt.executeQuery(sql)){
+				path = rs.getString("DocPath");
+				}catch(SQLException e){
+					JOptionPane.showMessageDialog(null,
+			    		    "Could not connect to server",
+			    		    "Error", JOptionPane.ERROR_MESSAGE);
+				}
+			
+			
+			File destination = new File(path);
+			
+
+			try {
+				FileUtils.copyFile(source, destination);
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null,
+		    		    "Cannot Upload Review Document",
+		    		    "Error", JOptionPane.ERROR_MESSAGE);
+			}
+		   connectToDb();
+		   sql = "UPDATE Reviews SET Completed = ?"+ "WHERE rid = ?" + "AND Uploaded=?"+ "AND Completed=?";
+		   try (Connection conn = myDb;
+	                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	            pstmt.setInt(1, 1); 
+	            pstmt.setInt(2, rid);
+	            pstmt.setInt(3, 1); 
+	            pstmt.setInt(4, 0); 
+	            pstmt.executeUpdate();
+	            
+	            JOptionPane.showMessageDialog(null,
+		    		    "Uploaded Document.",
+		    		    "Alert", JOptionPane.WARNING_MESSAGE);
+	            
+	        } catch (SQLException e) {
+	        	e.printStackTrace();
+				JOptionPane.showMessageDialog(null,
+		    		    "Could Not Connect To DB To Update Document.",
+		    		    "Error", JOptionPane.ERROR_MESSAGE);
+	        }
+			
+		}
 	}
 	public void findAllCompletedRevs() {
+		selectAllRevs();
+		convertCompleted();
+	}
+	public void selectAllRevs() {
 		
+		String sql = "select rid ,r1id, r2id from Reviews where targetid ='"+Db.getSelectedUser().getId()+"'";
+		connectToDb();
+		
+		try(Connection conn = myDb;
+				Statement stmt = conn.createStatement();
+				ResultSet rs  = stmt.executeQuery(sql)){
+			int columnCount = rs.getMetaData().getColumnCount();
+			while(rs.next())
+			{
+			    ArrayList<String> row = new  ArrayList<String>();
+			    for (int i=0; i <columnCount ; i++)
+			    {
+			       row.add( rs.getString(i + 1));
+			    }
+			    allCompleted.add(row);
+			}
+		}catch(SQLException e) {
+			JOptionPane.showMessageDialog(null,
+	    		    "Cannot connect to the Database",
+	    		    "Error",
+	    		    JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	/**
 	 * Converts ArrayLists into a 2D Array, that can be used by the JTable.
-	 */
+	*/
 	public void convertRevData(){
 		availableRevs = resultRev.stream().map(u -> u.toArray(new String[0])).toArray(String[][]::new);
 	}

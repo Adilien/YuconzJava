@@ -93,6 +93,12 @@ public class UserOverview {
 		frame.getContentPane().add(btnBack);
 		
 		JButton btnViewRev = new JButton("View Review Records");
+		btnViewRev.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AppController.viewAllRevs();
+				die();
+			}
+		});
 		btnViewRev.setBounds(160, 107, 218, 32);
 		frame.getContentPane().add(btnViewRev);
 		

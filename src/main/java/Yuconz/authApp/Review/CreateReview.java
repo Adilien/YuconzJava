@@ -158,6 +158,8 @@ public class CreateReview {
 				HRDatabase.getRev2().setFirstName(Rev2FName);
 				HRDatabase.getRev2().setLastName(Rev2SName);
 				AppController.createReview();
+				AppController.selectedDetails();
+				die();
 				
 			}	
 		});

@@ -31,6 +31,7 @@ public class AppController {
 	private static ReviewFrame mainReviewFrame;
 	private static CreateReview createReviewFrame;
 	private static HRDatabase hrDb;
+	private static AllRevsFrame allRevsFrame;
 	
 	/**
 	* Launch the application.
@@ -139,6 +140,9 @@ public class AppController {
     	}
     	if(createReviewFrame != null) {
     		createReviewFrame.die();
+    	}
+    	if(allRevsFrame != null) {
+    		allRevsFrame.die();
     	}
     	main(null);		// Runs main method again
     }
@@ -249,7 +253,8 @@ public class AppController {
     	hrDb.uploadRev();
     }
     public static void viewAllRevs() {
-    	
+    	hrDb.findAllCompletedRevs();
+    	allRevsFrame = new AllRevsFrame(hrDb.getAllCompletedRevs());
     }
     public static void allCompletedRevs() {
     	

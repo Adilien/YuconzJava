@@ -103,7 +103,6 @@ public class ReviewFrame {
 		frame.getContentPane().add(lblNewLabel);
 		
 		table = new JTable(data,columnNames);
-		table.setToolTipText("");
 		table.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		table.setFillsViewportHeight(true);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -121,7 +120,8 @@ public class ReviewFrame {
 		JButton btnDownload = new JButton("Download Document");
 		btnDownload.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String fullname = "John";
+				
+				String fullname = table.getValueAt(row, 2).toString()+" "+table.getValueAt(row, 3).toString();
 				int a=JOptionPane.showConfirmDialog(null,"Download Review Document for "+fullname +"? \n Do you wish to continue?","Download Review Document",JOptionPane.YES_NO_CANCEL_OPTION);  
 				if(a==0){
 				   int rid = Integer.parseInt(table.getValueAt(row, 0).toString());
@@ -137,10 +137,13 @@ public class ReviewFrame {
 		JButton btnUpload = new JButton("Upload Document");
 		btnUpload.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String fullname = "John";
+				String fullname = table.getValueAt(row, 2).toString()+" "+table.getValueAt(row, 3).toString();
 				int a=JOptionPane.showConfirmDialog(null,"Upload Final Review Document for "+fullname +"? \n You will not be able to undo this action. \n Do you wish to continue?","Upload Final Review Document",JOptionPane.YES_NO_CANCEL_OPTION);  
 				if(a==0){  
+				   int rid = Integer.parseInt(table.getValueAt(row, 0).toString());
+				   HRDatabase.setRid(rid);
 				   AppController.uploadFinalReviewDoc();
+				   AppController.logOut();
 				}  
 			}
 		});
