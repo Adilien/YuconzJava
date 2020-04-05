@@ -22,7 +22,7 @@ public class AppController {
 	private static LoginDisplay loginFrame;
 	private static MainDisplay mainFrame;
 	private static MyPdFrame myPdFrame;
-	private static AllDetails detailsLookUp;
+	private static MyDetails detailsLookUp;
 	private static UsersDisplay searchFrame;
 	private static UserOverview userInfo;
 	private static Db connection;
@@ -56,27 +56,37 @@ public class AppController {
 	 * @param pwd password
 	 */
 
-    public static void logIn(String uName, String pwd) {
+    public static void logIn(String uName, String pwd, boolean revChecked) {
     	auth = new Auth();
     	if(auth.checkValidUser(uName, pwd)) {
     		try {
+    			
+    			// Needs to create log for Reviewer Types too
     			auth.logAttempt(uName, pwd, true);
     			AppController.loginFrame.remove();
     			auth.logAuth();
+ 
+    			
     			hrDb = new HRDatabase();
-    			boolean beingReviewed = hrDb.checkIfBeingReviewed();
-    			mainFrame = new MainDisplay(beingReviewed);
+    			if(hrDb.checkIfReviewer() && revChecked) {
+    				reviewMenu();
+    			}else {
+        			mainFrame = new MainDisplay(hrDb.checkIfBeingReviewed());
+    			}
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
     	}else {
     		auth.logAttempt(uName, pwd, false);
+    		loginFrame.clear();
     		JOptionPane.showMessageDialog(null,
     		    "Username or Password is incorrect.",
     		    "Warning",
     		    JOptionPane.WARNING_MESSAGE);
     	}
     }
+    
     
     /**
      * Authenticates & Authorises the login and checks if the user is valid in the database.
@@ -86,28 +96,14 @@ public class AppController {
      * @param uName
      * @param pwd
      */
-    public static void reviewMenu(String uName, String pwd) {
+    public static void reviewMenu() {
     	
-    	Auth auth = new Auth();
-    	if(auth.checkValidUser(uName, pwd)) {
-    		try {
-    			auth.logAttempt(uName, pwd, true);
-    			AppController.loginFrame.remove();
-    			auth.logAuth();
-    			mainReviewFrame = new ReviewFrame();
-    			
-    			
-    			
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-    	}else {
-    		auth.logAttempt(uName, pwd, false);
-    		JOptionPane.showMessageDialog(null,
-    		    "Username or Password is incorrect.",
-    		    "Warning",
-    		    JOptionPane.WARNING_MESSAGE);
-    	}
+    	try {
+    		mainReviewFrame = new ReviewFrame();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
     	
     }
     /**
@@ -154,7 +150,7 @@ public class AppController {
     public static void generatePd() {
     	
     	mainFrame.hide();
-    	detailsLookUp = new AllDetails();
+    	detailsLookUp = new MyDetails();
     	if(detailsLookUp.checkDb()) {
     		detailsLookUp.pullDetails();
     		myPdFrame = new MyPdFrame();
@@ -239,6 +235,12 @@ public class AppController {
     public static void createReview() {
     	hrDb.createReviewDoc();
     }
+    public static void downloadMyReviewDoc() {
+    	hrDb.downloadMyRev();
+    }
+    public static void uploadDocument() {
+    	hrDb.uploadMyRev();
+    }
     /**
      * Frame killings and creation takes place below
      */
@@ -256,5 +258,8 @@ public class AppController {
     }
     public static void removeMyPd() {
     	myPdFrame.die();
+    }
+    public static MainDisplay getMainDisplay() {
+    	return mainFrame;
     }
 }

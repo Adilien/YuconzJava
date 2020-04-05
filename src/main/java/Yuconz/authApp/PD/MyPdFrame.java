@@ -69,18 +69,18 @@ private void initialize() {
 	int userId =  Auth.getCurrentUser().getId();
 	String myid = Integer.toString(userId);
 	//Get Personal Details
-	String firstName = AllDetails.getMyCurrentDetails().getFirstName();
-	String lastName = AllDetails.getMyCurrentDetails().getLastName();
-	String dob = AllDetails.getMyCurrentDetails().getDoB();
-	String address1 = AllDetails.getMyCurrentDetails().getAddress1();
-	String address2 = AllDetails.getMyCurrentDetails().getAddress2();
-	String city = AllDetails.getMyCurrentDetails().getCity();
-	String county = AllDetails.getMyCurrentDetails().getCounty();
-	String postCode = AllDetails.getMyCurrentDetails().getPostcode();
-	String mobileNum = AllDetails.getMyCurrentDetails().getMobile();
-	String telephoneNum = AllDetails.getMyCurrentDetails().getTelenum();
-	String emergencyContact = AllDetails.getMyCurrentDetails().getEmergencyContact();
-	String emergencyNum = AllDetails.getMyCurrentDetails().getEmergencyNum(); 
+	String firstName = MyDetails.getMyCurrentDetails().getFirstName();
+	String lastName = MyDetails.getMyCurrentDetails().getLastName();
+	String dob = MyDetails.getMyCurrentDetails().getDoB();
+	String address1 = MyDetails.getMyCurrentDetails().getAddress1();
+	String address2 = MyDetails.getMyCurrentDetails().getAddress2();
+	String city = MyDetails.getMyCurrentDetails().getCity();
+	String county = MyDetails.getMyCurrentDetails().getCounty();
+	String postCode = MyDetails.getMyCurrentDetails().getPostcode();
+	String mobileNum = MyDetails.getMyCurrentDetails().getMobile();
+	String telephoneNum = MyDetails.getMyCurrentDetails().getTelenum();
+	String emergencyContact = MyDetails.getMyCurrentDetails().getEmergencyContact();
+	String emergencyNum = MyDetails.getMyCurrentDetails().getEmergencyNum(); 
 
     JLabel lblRole = new JLabel("Role: "+Auth.getCurrentUser().getRole());
     lblRole.setBounds(10, 11, 157, 14);
@@ -252,18 +252,18 @@ private void initialize() {
     		
     		
     		//Set them as the new details within the MyCurrentDetails obj.
-    		AllDetails.getMyCurrentDetails().setFirstName(newFName);
-    		AllDetails.getMyCurrentDetails().setLastName(newSName);
-    		AllDetails.getMyCurrentDetails().setDoB(newDob);
-    		AllDetails.getMyCurrentDetails().setAddress1(newAddress1);
-    		AllDetails.getMyCurrentDetails().setAddress2(newAddress2);
-    		AllDetails.getMyCurrentDetails().setCity(newCity);
-    		AllDetails.getMyCurrentDetails().setCounty(newCounty);
-    		AllDetails.getMyCurrentDetails().setPostcode(newPostCode);
-    		AllDetails.getMyCurrentDetails().setMobile(newMobileNum);
-    		AllDetails.getMyCurrentDetails().setTelenum(newTelephoneNum);
-    		AllDetails.getMyCurrentDetails().setEmergencyNum(newEmergencyNum);
-    		AllDetails.getMyCurrentDetails().setEmergencyContact(newEmergencyContact);
+    		MyDetails.getMyCurrentDetails().setFirstName(newFName);
+    		MyDetails.getMyCurrentDetails().setLastName(newSName);
+    		MyDetails.getMyCurrentDetails().setDoB(newDob);
+    		MyDetails.getMyCurrentDetails().setAddress1(newAddress1);
+    		MyDetails.getMyCurrentDetails().setAddress2(newAddress2);
+    		MyDetails.getMyCurrentDetails().setCity(newCity);
+    		MyDetails.getMyCurrentDetails().setCounty(newCounty);
+    		MyDetails.getMyCurrentDetails().setPostcode(newPostCode);
+    		MyDetails.getMyCurrentDetails().setMobile(newMobileNum);
+    		MyDetails.getMyCurrentDetails().setTelenum(newTelephoneNum);
+    		MyDetails.getMyCurrentDetails().setEmergencyNum(newEmergencyNum);
+    		MyDetails.getMyCurrentDetails().setEmergencyContact(newEmergencyContact);
     		
     		AppController.saveMyDetails();
     		

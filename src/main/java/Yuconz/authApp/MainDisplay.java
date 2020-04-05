@@ -92,7 +92,7 @@ public class MainDisplay {
 				AppController.generatePd();
 			}
 		});
-		btnMyPd.setBounds(271, 164, 157, 23);
+		btnMyPd.setBounds(260, 158, 179, 23);
 		frame.getContentPane().add(btnMyPd);
 		JButton btnChangeAccess = new JButton("Toggle Access Level");
 		
@@ -106,16 +106,28 @@ public class MainDisplay {
 			}
 		});
 		
-		btnEmployees.setBounds(271, 235, 157, 23);
+		btnEmployees.setBounds(260, 214, 179, 23);
 		frame.getContentPane().add(btnEmployees);
 		
 		JButton btnReviewDoc = new JButton("Download Review Doc");
 		btnReviewDoc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				AppController.downloadMyReviewDoc();
 			}
 		});
-		btnReviewDoc.setBounds(271, 296, 157, 23);
+		btnReviewDoc.setBounds(260, 270, 179, 23);
 		frame.getContentPane().add(btnReviewDoc);
+		
+		JButton btnUploadRev = new JButton("Upload Review Doc");
+		btnUploadRev.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				AppController.uploadDocument();
+				
+			}
+		});
+		btnUploadRev.setBounds(260, 326, 179, 23);
+		frame.getContentPane().add(btnUploadRev);
 		btnChangeAccess.setVisible(false);
 		
 		btnChangeAccess.addActionListener(new ActionListener() {
@@ -146,8 +158,10 @@ public class MainDisplay {
 		
 		if(input) {
 			btnReviewDoc.setVisible(true);
+			btnUploadRev.setVisible(true);
 		}else {
 			btnReviewDoc.setVisible(false);
+			btnUploadRev.setVisible(false);
 		}
 
 	}

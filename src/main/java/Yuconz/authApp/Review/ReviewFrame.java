@@ -13,6 +13,8 @@ import Yuconz.authApp.Auth;
 import Yuconz.controller.AppController;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
+import javax.swing.JPanel;
+import javax.swing.JTable;
 
 
 /**
@@ -23,8 +25,8 @@ import javax.swing.ListSelectionModel;
 public class ReviewFrame {
 
 	private JFrame frame;
-	private String [] reviewList = { "Monday","Tuesday","Wednesday", 
-            "Thursday","Friday","Saturday","Sunday"}; 
+	private String[] columnNames = {"Staff ID","First Name","Last Name","Role"};
+	private static JTable table;
 
 	/**
 	 * Create the application.
@@ -40,12 +42,10 @@ public class ReviewFrame {
 		frame = new JFrame();
 		frame.setTitle("Yuconz System");
 		frame.setIconImage(
-				Toolkit.getDefaultToolkit().getImage(ReviewFrame.class.getResource("/authApp/img/LogoNoText.png")));
+				Toolkit.getDefaultToolkit().getImage(ReviewFrame.class.getResource("/LogoNoText.png")));
 		frame.setBounds(100, 100, 715, 433);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		frame.setLocationRelativeTo(null); 
-		frame.setVisible(true);
 		
 		
 		JButton btnLogout = new JButton("LOGOUT");
@@ -69,7 +69,7 @@ public class ReviewFrame {
 		JLabel lblName = new JLabel("<dynamic> <dynamic>");
 		lblName.setText(fName + " " + sName);
 		lblName.setHorizontalAlignment(SwingConstants.CENTER);
-		lblName.setBounds(131, 100, 436, 23);
+		lblName.setBounds(131, 61, 436, 23);
 		frame.getContentPane().add(lblName);
 
 		JLabel lblRole = new JLabel("Role: " + role);
@@ -78,13 +78,20 @@ public class ReviewFrame {
 
 		JLabel lblWelcome = new JLabel("Welcome,");
 		lblWelcome.setHorizontalAlignment(SwingConstants.CENTER);
-		lblWelcome.setBounds(131, 81, 436, 14);
+		lblWelcome.setBounds(131, 36, 436, 14);
 		frame.getContentPane().add(lblWelcome);
 		
-		JList list = new JList(reviewList);
-		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		list.setBounds(284, 160, 132, 203);
-		frame.getContentPane().add(list);
+		JPanel panel = new JPanel();
+		panel.setBounds(10, 153, 293, 230);
+		frame.getContentPane().add(panel);
+		
+		JLabel lblNewLabel = new JLabel("Awaiting To Be Reviewed");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setBounds(34, 119, 222, 23);
+		frame.getContentPane().add(lblNewLabel);
+		
+		frame.setLocationRelativeTo(null); 
+		frame.setVisible(true);
 		
 	}
 	public void die() {

@@ -13,7 +13,11 @@ import javax.swing.JOptionPane;
 import Yuconz.authApp.User;
 import Yuconz.authApp.PD.PdStore;
 
-
+/**
+ * This class connects to the DB and retrieves all information that is not associated with the current logged in user.
+ * @author Tsotne
+ *
+ */
 public class Db {
 
 	private static User selectedUser;

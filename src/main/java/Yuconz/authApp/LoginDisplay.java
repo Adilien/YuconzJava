@@ -31,6 +31,7 @@ public class LoginDisplay{
 	private JTextField textField;
 	private JLabel lblNewLabel;
 	private JLabel lblNewLabel_1;
+	private JCheckBox chkReview;
 	
 	/**
 	* Create the Frame.
@@ -61,7 +62,7 @@ public class LoginDisplay{
 		lblTitle.setBounds(149, 11, 145, 27);
 		frame.getContentPane().add(lblTitle);
 		
-		JCheckBox chkReview = new JCheckBox("Reviewer");
+		chkReview = new JCheckBox("Reviewer");
 		chkReview.setBounds(178, 175, 88, 23);
 		frame.getContentPane().add(chkReview);
 		
@@ -92,11 +93,11 @@ public class LoginDisplay{
 				
 				if(chkReview.isSelected()) {
 					
-					AppController.reviewMenu(uName, pwd);
+					AppController.logIn(uName, pwd, true);
 					
 				}else {
 					
-					AppController.logIn(uName, pwd);
+					AppController.logIn(uName, pwd, false);
 					
 				}
 			}
@@ -133,5 +134,11 @@ public class LoginDisplay{
 	}
 	public void remove() {
 		frame.dispose();
+	}
+
+	public void clear() {
+		passwordField.setText(null);
+		textField.setText(null);
+		chkReview.setSelected(false);
 	}
 }

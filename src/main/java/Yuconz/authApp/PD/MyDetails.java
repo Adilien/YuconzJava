@@ -13,12 +13,12 @@ import Yuconz.authApp.Auth;
  * @author Tsotne
  *
  */
-public class AllDetails {
+public class MyDetails {
 	
 	private Connection myDb = null;
 	private static MyPdStore myCurrentDetails;
 	
-	public AllDetails() {
+	public MyDetails() {
 		connectToDb();
 		myCurrentDetails = new MyPdStore();
 	}
