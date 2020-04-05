@@ -242,6 +242,18 @@ public class AppController {
     public static void uploadDocument() {
     	hrDb.uploadMyRev();
     }
+    public static void downloadReviewDoc() {
+    	hrDb.downloadRev();
+    }
+    public static void uploadFinalReviewDoc() {
+    	hrDb.uploadRev();
+    }
+    public static void viewAllRevs() {
+    	
+    }
+    public static void allCompletedRevs() {
+    	
+    }
     /**
      * Frame killings and creation takes place below
      */

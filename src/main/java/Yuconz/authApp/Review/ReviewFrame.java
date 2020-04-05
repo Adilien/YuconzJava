@@ -31,14 +31,14 @@ import java.awt.Font;
 public class ReviewFrame {
 
 	private JFrame frame;
-	private String[] columnNames = {"Staff ID","First Name","Last Name", "Reviewer1 ID", "Reviewer2 ID"};
+	private String[] columnNames = {"Review ID","Staff ID","First Name","Last Name", "Reviewer1 ID", "Reviewer2 ID"};
 	//For Tests
 	String[][] data = { 
-            { "Kundan Kumar Jha", "4031", "CSE","5","123" }, 
-            { "Anand Jha", "6014", "IT","5","123" } 
+            { "3","Kundan Kumar Jha", "4031", "CSE","5","123" }, 
+            { "2","Anand Jha", "6014", "IT","5","123" } 
         }; 
 	private static JTable table;
-	private JTable table_1;
+	private int row;
 
 	/**
 	 * Create the application.
@@ -99,11 +99,11 @@ public class ReviewFrame {
 		
 		JLabel lblNewLabel = new JLabel("Awaiting To Be Reviewed");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(34, 119, 222, 23);
+		lblNewLabel.setBounds(161, 119, 222, 23);
 		frame.getContentPane().add(lblNewLabel);
 		
-		table = new JTable(input,columnNames);
-		table.setToolTipText("Select Someone For More Actions");
+		table = new JTable(data,columnNames);
+		table.setToolTipText("");
 		table.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		table.setFillsViewportHeight(true);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -115,15 +115,35 @@ public class ReviewFrame {
 		panel.add(sp);
 		
 		JLabel lblMyId = new JLabel("Staff ID: "+userId);
-		lblMyId.setBounds(0, 36, 95, 14);
+		lblMyId.setBounds(10, 36, 95, 14);
 		frame.getContentPane().add(lblMyId);
 		
 		JButton btnDownload = new JButton("Download Document");
+		btnDownload.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String fullname = "John";
+				int a=JOptionPane.showConfirmDialog(null,"Download Review Document for "+fullname +"? \n Do you wish to continue?","Download Review Document",JOptionPane.YES_NO_CANCEL_OPTION);  
+				if(a==0){
+				   int rid = Integer.parseInt(table.getValueAt(row, 0).toString());
+				   HRDatabase.setRid(rid);
+				   AppController.downloadReviewDoc();
+				}  
+			}
+		});
 		btnDownload.setBounds(621, 181, 157, 23);
 		frame.getContentPane().add(btnDownload);
 		btnDownload.setVisible(false);
 		
 		JButton btnUpload = new JButton("Upload Document");
+		btnUpload.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String fullname = "John";
+				int a=JOptionPane.showConfirmDialog(null,"Upload Final Review Document for "+fullname +"? \n You will not be able to undo this action. \n Do you wish to continue?","Upload Final Review Document",JOptionPane.YES_NO_CANCEL_OPTION);  
+				if(a==0){  
+				   AppController.uploadFinalReviewDoc();
+				}  
+			}
+		});
 		btnUpload.setBounds(621, 232, 157, 23);
 		frame.getContentPane().add(btnUpload);
 		btnUpload.setVisible(false);
@@ -131,22 +151,19 @@ public class ReviewFrame {
 		
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 	        public void valueChanged(ListSelectionEvent event) {
-	        	int row = table.getSelectedRow();
+	        	row = table.getSelectedRow();
 	        	if (!event.getValueIsAdjusting() & row >= 0 ) {
 	        		String r1 = table.getValueAt(row, 4).toString();
-	        		String r2 = table.getValueAt(row, 5).toString();
-	        		//int r1id 
+	        		int r1id = Integer.parseInt(r1);
 		        		btnDownload.setVisible(true);
 		        		
-		        		//if(userId == targetId) {
-		        			//btnUpload.setVisible(true);
-		        		//}
+		        		if(userId == r1id) {
+		        			btnUpload.setVisible(true);
+		        		}
 	        	}
 	        	
 	        }
 	    });
-		
-		
 		
 		frame.setLocationRelativeTo(null); 
 		frame.setVisible(true);

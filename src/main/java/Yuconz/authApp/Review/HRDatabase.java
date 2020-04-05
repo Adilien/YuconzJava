@@ -33,11 +33,14 @@ public class HRDatabase {
 	private Connection myDb = null;
 	private ArrayList<ArrayList <String>> resultRev = new ArrayList<ArrayList<String>>();
 	private ArrayList<ArrayList <String>> resultToDo = new ArrayList<ArrayList<String>>();
+	private ArrayList<ArrayList <String>> allCompleted = new ArrayList<ArrayList<String>>();
 	private String[][] availableRevs;
 	private String[][] toDoRevs;
+	private String[][] completedRevs;
 	
 	private static User reviewer1 = new User(null, null, null, false, false, 0);
 	private static User reviewer2 = new User(null, null, null, false, false, 0);
+	private static int rid;
 	
 	
 	public HRDatabase() {
@@ -99,7 +102,7 @@ public class HRDatabase {
 	public boolean checkIfBeingReviewed() {
 		int userId = Auth.getCurrentUser().getId();
 		int foundId;
-		String sql = "select targetid from Reviews where targetid='"+userId+"'and Completed1='0' and Completed2='0'";
+		String sql = "select targetid from Reviews where targetid='"+userId+"'and Completed='0'";
 		connectToDb();
 		try(Connection conn = myDb;
 			Statement stmt = conn.createStatement();
@@ -126,7 +129,7 @@ public class HRDatabase {
 		int userId = Auth.getCurrentUser().getId();
 		int potentialId1;
 		int potentialId2;
-		String sql = "select r1id,r2id from Reviews where (r1id='"+userId+"' and Completed1 ='0') or (r2id='"+userId+"'and Completed2='0')";
+		String sql = "select r1id,r2id from Reviews where (r1id='"+userId+"'or r2id='"+userId+"') and Completed= '0'";
 		connectToDb();
 		try(Connection conn = myDb;
 			Statement stmt = conn.createStatement();
@@ -175,7 +178,7 @@ public class HRDatabase {
 		connectToDb();
 		// Store Info into DB
 		
-		String sql = "INSERT INTO Reviews(targetid,targetFName,targetSName,r1id,r1FName,r1SName,r2id,r2FName,r2SName,DocPath,Completed1,Completed2) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO Reviews(targetid,targetFName,targetSName,r1id,r1FName,r1SName,r2id,r2FName,r2SName,DocPath,Completed,Uploaded) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
 		 
         try (Connection conn = myDb;
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -236,7 +239,7 @@ public class HRDatabase {
 	}
 	/**
 	 * Uploads Users Document so they can be reviewed.
-	 */
+	*/
 	public void uploadMyRev() {
 		
 		JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
@@ -270,15 +273,33 @@ public class HRDatabase {
 
 			try {
 				FileUtils.copyFile(source, destination);
-				JOptionPane.showMessageDialog(null,
-		    		    "Uploaded Document.",
-		    		    "Alert", JOptionPane.WARNING_MESSAGE);
+				
 			} catch (IOException e) {
 				e.printStackTrace();
 				JOptionPane.showMessageDialog(null,
 		    		    "Cannot Upload Review Document",
 		    		    "Error", JOptionPane.ERROR_MESSAGE);
 			}
+		   connectToDb();
+		   sql = "UPDATE Reviews SET Uploaded = ?"+ "WHERE targetid = ?" + "AND Uploaded=?"+ "AND Completed=?";
+		   try (Connection conn = myDb;
+	                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	            pstmt.setInt(1, 1); 
+	            pstmt.setInt(2, userId);
+	            pstmt.setInt(3, 0); 
+	            pstmt.setInt(4, 0); 
+	            pstmt.executeUpdate();
+	            
+	            JOptionPane.showMessageDialog(null,
+		    		    "Uploaded Document.",
+		    		    "Alert", JOptionPane.WARNING_MESSAGE);
+	            
+	        } catch (SQLException e) {
+	        	e.printStackTrace();
+				JOptionPane.showMessageDialog(null,
+		    		    "Could Not Connect To DB To Update Document.",
+		    		    "Error", JOptionPane.ERROR_MESSAGE);
+	        }
 			
 		}
 		
@@ -299,7 +320,7 @@ public class HRDatabase {
 		
 		int userId = Auth.getCurrentUser().getId();
 		
-		String sql = "select targetid,targetFName,targetSName,r1id,r2id from Reviews where (r1id='"+userId+"' and Completed1 ='0') or (r2id='"+userId+"'and Completed2='0')";
+		String sql = "select rid, targetid, targetFName, targetSName, r1id, r2id from Reviews where (Completed='0') and (Uploaded = '1') and (r1id ='"+userId+"' or r2id='"+userId+"')";
 		
 		connectToDb();
 		try(Connection conn = myDb;
@@ -322,7 +343,18 @@ public class HRDatabase {
 	    		    JOptionPane.ERROR_MESSAGE);
 		}
 	}
-	
+	public void downloadRev() {
+		
+		connectToDb();
+		
+	}
+	public void uploadRev() {
+		
+		connectToDb();
+	}
+	public void findAllCompletedRevs() {
+		
+	}
 	/**
 	 * Converts ArrayLists into a 2D Array, that can be used by the JTable.
 	 */
@@ -332,6 +364,12 @@ public class HRDatabase {
 	
 	public void convertToDoData() {
 		toDoRevs = resultToDo.stream().map(u -> u.toArray(new String[0])).toArray(String[][]::new);
+	}
+	public void convertCompleted() {
+		completedRevs = allCompleted.stream().map(u -> u.toArray(new String[0])).toArray(String[][]::new);
+	}
+	public String[][] getAllCompletedRevs() {
+		return completedRevs;
 	}
 	public String[][] getReviewers() {
 		return availableRevs;
@@ -346,5 +384,11 @@ public class HRDatabase {
 	}
 	public static User getRev2() {
 		return reviewer2;
+	}
+	public static int getRid() {
+		return rid;
+	}
+	public static void setRid(int input) {
+		rid = input;
 	}
 }
