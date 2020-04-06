@@ -274,7 +274,7 @@ public class HRDatabase {
 			File source = new File(selectedFile.getAbsolutePath());
 			
 			int userId = Auth.getCurrentUser().getId();
-			String sql = "select DocPath from Reviews where targetid='"+userId+"'";
+			String sql = "select DocPath from Reviews where targetid='"+userId+"' and Completed ='0'";
 			
 			connectToDb();
 			
@@ -294,7 +294,6 @@ public class HRDatabase {
 
 			try {
 				FileUtils.copyFile(source, destination);
-				
 			} catch (IOException e) {
 				e.printStackTrace();
 				JOptionPane.showMessageDialog(null,
