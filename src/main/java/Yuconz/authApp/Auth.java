@@ -74,7 +74,7 @@ public class Auth {
 	/**
 	 * Logs Authorisation of the Authenticated User.
 	 */
-	public void logAuth() {
+	public void logAuth(boolean isReviewer) {
 		
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 		LocalDateTime currentTime = LocalDateTime.now();
@@ -86,6 +86,10 @@ public class Auth {
 		
 		String name = currentUser.getFirstName()+" "+currentUser.getLastName();
 		String role = currentUser.getRole();
+		
+		if(isReviewer) {
+			role = "Reviewer";
+		}
 		
 		if(currentUser.getAccess()) {
 			higherAccess = auth;

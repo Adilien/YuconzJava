@@ -62,17 +62,19 @@ public class AppController {
     	if(auth.checkValidUser(uName, pwd)) {
     		try {
     			
-    			// Needs to create log for Reviewer Types too
+    			
     			auth.logAttempt(uName, pwd, true);
     			AppController.loginFrame.remove();
-    			auth.logAuth();
+    			
  
     			
     			hrDb = new HRDatabase();
     			if(hrDb.checkIfReviewer() && revChecked) {
     				reviewMenu();
+    				auth.logAuth(true);
     			}else {
         			mainFrame = new MainDisplay(hrDb.checkImBeingReviewed());
+        			auth.logAuth(false);
     			}
 
 			} catch (Exception e) {
