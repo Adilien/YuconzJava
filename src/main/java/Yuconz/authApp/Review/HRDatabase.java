@@ -99,8 +99,29 @@ public class HRDatabase {
 	}
 	
 	
-	public boolean checkIfBeingReviewed() {
+	public boolean checkImBeingReviewed() {
 		int userId = Auth.getCurrentUser().getId();
+		int foundId;
+		String sql = "select targetid from Reviews where targetid='"+userId+"'and Completed='0'";
+		connectToDb();
+		try(Connection conn = myDb;
+			Statement stmt = conn.createStatement();
+			ResultSet rs  = stmt.executeQuery(sql)){
+			foundId = rs.getInt("targetid");
+				
+		}catch(SQLException e){
+			
+			return false;
+		}
+		
+		if(foundId == userId) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	public boolean checkIfBeingReviewed() {
+		int userId = Db.getSelectedUser().getId();
 		int foundId;
 		String sql = "select targetid from Reviews where targetid='"+userId+"'and Completed='0'";
 		connectToDb();

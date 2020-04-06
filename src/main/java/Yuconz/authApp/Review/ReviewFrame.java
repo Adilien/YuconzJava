@@ -32,11 +32,6 @@ public class ReviewFrame {
 
 	private JFrame frame;
 	private String[] columnNames = {"Review ID","Staff ID","First Name","Last Name", "Reviewer1 ID", "Reviewer2 ID"};
-	//For Tests
-	String[][] data = { 
-            { "3","Kundan Kumar Jha", "4031", "CSE","5","123" }, 
-            { "2","Anand Jha", "6014", "IT","5","123" } 
-        }; 
 	private static JTable table;
 	private int row;
 
@@ -102,7 +97,7 @@ public class ReviewFrame {
 		lblNewLabel.setBounds(161, 119, 222, 23);
 		frame.getContentPane().add(lblNewLabel);
 		
-		table = new JTable(data,columnNames);
+		table = new JTable(input,columnNames);
 		table.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		table.setFillsViewportHeight(true);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -122,12 +117,10 @@ public class ReviewFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				String fullname = table.getValueAt(row, 2).toString()+" "+table.getValueAt(row, 3).toString();
-				int a=JOptionPane.showConfirmDialog(null,"Download Review Document for "+fullname +"? \n Do you wish to continue?","Download Review Document",JOptionPane.YES_NO_CANCEL_OPTION);  
-				if(a==0){
-				   int rid = Integer.parseInt(table.getValueAt(row, 0).toString());
-				   HRDatabase.setRid(rid);
-				   AppController.downloadReviewDoc();
-				}  
+				JOptionPane.showMessageDialog(null, "You have downloaded the Review Document To Your Devices Downloads Folder.");
+				int rid = Integer.parseInt(table.getValueAt(row, 0).toString());
+				HRDatabase.setRid(rid);
+				AppController.downloadReviewDoc();
 			}
 		});
 		btnDownload.setBounds(621, 181, 157, 23);

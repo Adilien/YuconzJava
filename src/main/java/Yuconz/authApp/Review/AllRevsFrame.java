@@ -79,7 +79,7 @@ public class AllRevsFrame {
 		btnDownload.setBounds(630, 237, 118, 23);
 		frame.getContentPane().add(btnDownload);
 		
-		table = new JTable(data,columnNames);
+		table = new JTable(input,columnNames);
 		table.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setDefaultEditor(Object.class, null);

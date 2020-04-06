@@ -72,7 +72,7 @@ public class AppController {
     			if(hrDb.checkIfReviewer() && revChecked) {
     				reviewMenu();
     			}else {
-        			mainFrame = new MainDisplay(hrDb.checkIfBeingReviewed());
+        			mainFrame = new MainDisplay(hrDb.checkImBeingReviewed());
     			}
 
 			} catch (Exception e) {
@@ -182,11 +182,12 @@ public class AppController {
      */
     public static void selectedDetails() {
     	connection.findUser();
+    	boolean beingReviewed = hrDb.checkIfBeingReviewed();
     	
     	if(connection.matchPersonalDetails()) {
-    		userInfo = new UserOverview(true);
+    		userInfo = new UserOverview(true,beingReviewed);
     	}else {
-    		userInfo = new UserOverview(false);
+    		userInfo = new UserOverview(false,beingReviewed);
     	}
     	
     }

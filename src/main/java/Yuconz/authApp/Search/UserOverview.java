@@ -22,18 +22,19 @@ public class UserOverview {
 	private boolean exists;
 	
 	
+	
 	/**
 	 * Create the application.
 	 */
-	public UserOverview(boolean input) {
+	public UserOverview(boolean input, boolean rev) {
 		exists = input;
-		initialize();
+		initialize(rev);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize(boolean beingReviewed) {
 		
 		int id = Db.getSelectedUser().getId();
 		
@@ -117,6 +118,9 @@ public class UserOverview {
 			btnCreateBtn.setVisible(false);
 		}else {
 			btnView.setVisible(false);
+		}
+		if(beingReviewed) {
+			btnStartRev.setVisible(false);
 		}
 		
 		// Checks to see if the current User has HR Access or not.

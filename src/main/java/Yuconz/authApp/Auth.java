@@ -221,9 +221,6 @@ public class Auth {
 				case "Manager":
 					currentUser = new Manager(rs.getString("fname"),rs.getString("sName"),rs.getInt("id"));
 					break;
-				case "Reviewer":
-					currentUser = new Reviewer(rs.getString("fname"),rs.getString("sName"),rs.getInt("id"));
-					break;
 				case "Employee":
 					currentUser = new Employee(rs.getString("fname"),rs.getString("sName"),rs.getInt("id"));
 					break;
