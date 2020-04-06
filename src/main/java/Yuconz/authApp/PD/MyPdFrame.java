@@ -96,11 +96,6 @@ private void initialize() {
     lblNewLabel_1.setBounds(10, 35, 91, 16);
     frame.getContentPane().add(lblNewLabel_1);
 
-    JLabel lblNewLabel_2 = new JLabel(myid);
-    lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
-    lblNewLabel_2.setBounds(62, 36, 105, 16);
-    frame.getContentPane().add(lblNewLabel_2);
-
     JLabel lblNewLabel_3 = new JLabel("Forename");
     lblNewLabel_3.setBounds(10, 98, 91, 16);
     frame.getContentPane().add(lblNewLabel_3);
