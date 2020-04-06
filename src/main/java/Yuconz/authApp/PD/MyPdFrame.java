@@ -86,23 +86,19 @@ private void initialize() {
     lblRole.setBounds(10, 11, 157, 14);
     frame.getContentPane().add(lblRole);
 
-    JLabel lblAccessLevel = new JLabel("Access Level: Normal");
-    lblAccessLevel.setBounds(10, 36, 186, 14);
-    frame.getContentPane().add(lblAccessLevel);
-
     JLabel lblNewLabel = new JLabel("My Personal Details");
     lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
     lblNewLabel.setBounds(194, 10, 393, 16);
     frame.getContentPane().add(lblNewLabel);
 
-    JLabel lblNewLabel_1 = new JLabel("Staff No: ");
-    lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-    lblNewLabel_1.setBounds(614, 35, 91, 16);
+    JLabel lblNewLabel_1 = new JLabel("Staff No: "+myid);
+    lblNewLabel_1.setHorizontalAlignment(SwingConstants.LEFT);
+    lblNewLabel_1.setBounds(10, 35, 91, 16);
     frame.getContentPane().add(lblNewLabel_1);
 
     JLabel lblNewLabel_2 = new JLabel(myid);
     lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
-    lblNewLabel_2.setBounds(676, 35, 105, 16);
+    lblNewLabel_2.setBounds(62, 36, 105, 16);
     frame.getContentPane().add(lblNewLabel_2);
 
     JLabel lblNewLabel_3 = new JLabel("Forename");

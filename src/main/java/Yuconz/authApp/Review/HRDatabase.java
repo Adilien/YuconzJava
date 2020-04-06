@@ -230,7 +230,7 @@ public class HRDatabase {
 		int userId = Auth.getCurrentUser().getId();
 		String path ="Test.pdf";
 		
-		String sql = "select DocPath from Reviews where targetid='"+userId+"'";
+		String sql = "select DocPath from Reviews where targetid='"+userId+"' and Completed ='0'";
 		
 		connectToDb();
 		
