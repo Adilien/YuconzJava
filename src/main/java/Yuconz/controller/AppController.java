@@ -65,9 +65,7 @@ public class AppController {
     			
     			auth.logAttempt(uName, pwd, true);
     			AppController.loginFrame.remove();
-    			
- 
-    			
+    		
     			hrDb = new HRDatabase();
     			if(hrDb.checkIfReviewer() && revChecked) {
     				reviewMenu();
